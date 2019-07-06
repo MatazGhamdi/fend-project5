@@ -4,6 +4,17 @@ let restaurants,
 var newMap
 var markers = []
 
+
+// check if browser support serviceworker
+//register serviceworker 
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('../service-worker.js')
+      .catch(err => console.log(err));
+  });
+}
+
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -12,6 +23,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
   fetchNeighborhoods();
   fetchCuisines();
 });
+
+
 
 /**
  * Fetch all neighborhoods and set their HTML.
@@ -73,10 +86,10 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
  */
 initMap = () => {
   self.newMap = L.map('map', {
-        center: [40.722216, -73.987501],
-        zoom: 12,
-        scrollWheelZoom: false
-      });
+    center: [40.722216, -73.987501],
+    zoom: 12,
+    scrollWheelZoom: false
+  });
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}', {
     mapboxToken: 'pk.eyJ1IjoibWF0YXpnaGFtZGkiLCJhIjoiY2p4cGw3dGl5MDJ4ZDNkbzhuMzc5OHR0cCJ9.-MzwjABvWrKus1Tuj7N-VQ',
     maxZoom: 18,
@@ -84,7 +97,7 @@ initMap = () => {
       '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
       'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     id: 'mapbox.streets'
-    
+
   }).addTo(newMap);
 
   updateRestaurants();
@@ -180,7 +193,7 @@ createRestaurantHTML = (restaurant) => {
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
-  more.tabIndex='4';
+  more.tabIndex = '4';
   li.append(more)
 
   return li
@@ -200,7 +213,7 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 
-} 
+}
 
 /* addMarkersToMap = (restaurants = self.restaurants) => {
   restaurants.forEach(restaurant => {
@@ -212,4 +225,6 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 } */
+
+
 
