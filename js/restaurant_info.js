@@ -163,6 +163,7 @@ createReviewHTML = (review) => {
 
   const comments = document.createElement('p');
   comments.innerHTML = review.comments;
+  comments.tabIndex = '3';
   li.appendChild(comments);
 
   return li;
